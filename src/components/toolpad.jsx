@@ -10,13 +10,12 @@ import LayersIcon from '@mui/icons-material/Layers'
 import PersonIcon from '@mui/icons-material/Person'
 
 import { AppProvider } from '@toolpad/core/AppProvider'
-import { DashboardLayout } from '@toolpad/core/DashboardLayout'
+import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout'
 
 import Divider from '@mui/joy/Divider'
 import { PageContainer } from '@toolpad/core/PageContainer'
 import Tooltip from '@mui/material/Tooltip'
 import Stack from '@mui/material/Stack'
-
 
 import App from '../App.jsx'
 
@@ -114,19 +113,14 @@ function useDemoRouter(initialPath) {
 	return router
 }
 
-
-
 DemoPageContent.propTypes = {
 	pathname: PropTypes.string.isRequired,
 }
 
-
 function CustomAppTitle() {
 	return (
 		<Stack direction='row' alignItems='center' spacing={2}>
-
 			<Typography variant='h6'>My App</Typography>
-
 		</Stack>
 	)
 }
@@ -134,9 +128,7 @@ function CustomAppTitle() {
 function DashboardLayoutBasic(props) {
 	const { window } = props
 
-	const [session, setSession] = React.useState({
-
-	})
+	const [session, setSession] = React.useState({})
 
 	const authentication = React.useMemo(() => {
 		return {
@@ -155,7 +147,7 @@ function DashboardLayoutBasic(props) {
 		}
 	}, [])
 
-	const router = useDemoRouter('/dashboard')
+	const router = useDemoRouter('./')
 
 	// Remove
 	const demoWindow = window !== undefined ? window() : undefined
@@ -176,10 +168,14 @@ function DashboardLayoutBasic(props) {
 				homeUrl: './',
 			}}
 		>
-			<DashboardLayout slots={{ 
-				
-
-			 }}>
+			<DashboardLayout
+				slots={{
+					toolbarActions: () => null,
+					sidebarFooter: () => {
+						return (<ThemeSwitcher />)},
+				}}
+				defaultSidebarCollapsed
+			>
 				<PageContainer>
 					<DemoPageContent pathname={router.pathname} />
 				</PageContainer>
@@ -190,7 +186,6 @@ function DashboardLayoutBasic(props) {
 }
 
 DashboardLayoutBasic.propTypes = {
-
 	window: PropTypes.func,
 }
 
