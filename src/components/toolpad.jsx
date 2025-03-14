@@ -1,5 +1,13 @@
 import * as React from 'react'
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	useLocation,
+	useNavigate,
+} from 'react-router-dom'
 import PropTypes from 'prop-types'
+
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { createTheme } from '@mui/material/styles'
@@ -8,62 +16,15 @@ import BarChartIcon from '@mui/icons-material/BarChart'
 import DescriptionIcon from '@mui/icons-material/Description'
 import LayersIcon from '@mui/icons-material/Layers'
 import PersonIcon from '@mui/icons-material/Person'
+import Divider from '@mui/joy/Divider'
 
 import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout'
-
-import Divider from '@mui/joy/Divider'
 import { PageContainer } from '@toolpad/core/PageContainer'
-import Tooltip from '@mui/material/Tooltip'
-import Stack from '@mui/material/Stack'
 
 import App from '../App.jsx'
-
-const NAVIGATION = [
-	{
-		kind: 'header',
-		title: 'Main items',
-	},
-	{
-		segment: 'dashboard',
-		title: 'Dashboard',
-		icon: <DashboardIcon />,
-	},
-	{
-		segment: 'person',
-		title: 'Person',
-		icon: <PersonIcon />,
-	},
-	{
-		kind: 'divider',
-	},
-	{
-		kind: 'header',
-		title: 'Analytics',
-	},
-	{
-		segment: 'reports',
-		title: 'Reports',
-		icon: <BarChartIcon />,
-		children: [
-			{
-				segment: 'chart',
-				title: 'Chart',
-				icon: <DescriptionIcon />,
-			},
-			{
-				segment: 'traffic',
-				title: 'Traffic',
-				icon: <DescriptionIcon />,
-			},
-		],
-	},
-	{
-		segment: 'integrations',
-		title: 'Integrations',
-		icon: <LayersIcon />,
-	},
-]
+import Dashboard from './pages/DashBoard.jsx'
+import Profile from './pages/Profile.jsx'
 
 const Theme = createTheme({
 	cssVariables: {
@@ -71,97 +32,104 @@ const Theme = createTheme({
 	},
 	colorSchemes: { light: true, dark: true },
 	breakpoints: {
-		values: {
-			xs: 0,
-			sm: 600,
-			md: 600,
-			lg: 1200,
-			xl: 1536,
-		},
+		values: { xs: 0, sm: 600, md: 600, lg: 1200, xl: 1536 },
 	},
 })
 
-function DemoPageContent({ pathname }) {
+function useRouter() {
+	const location = useLocation()
+	const navigate = useNavigate()
+
+	return {
+		pathname: location.pathname,
+		searchParams: new URLSearchParams(location.search),
+		navigate: path => navigate(path),
+	}
+}
+
+function getNavigation(navigate) {
+	return [
+		{ kind: 'header', title: 'Main items' },
+		{
+			segment: 'dashboard',
+			title: 'Dashboard',
+			icon: <DashboardIcon />,
+			onclick: () => navigate('/dashboard'),
+		},
+		{
+			segment: 'profile',
+			title: 'Profile',
+			icon: <PersonIcon />,
+			onclick: () => navigate('/profile'),
+		},
+		{ kind: 'divider' },
+		{ kind: 'header', title: 'Analytics' },
+		{
+			segment: 'reports',
+			title: 'Reports',
+			icon: <BarChartIcon />,
+			children: [
+				{
+					segment: 'chart',
+					title: 'Chart',
+					icon: <DescriptionIcon />,
+					onclick: () => navigate('/chart'),
+				},
+				{
+					segment: 'traffic',
+					title: 'Traffic',
+					icon: <DescriptionIcon />,
+					onclick: () => navigate('/traffic'),
+				},
+			],
+		},
+		{ segment: 'integrations', title: 'Integrations', icon: <LayersIcon /> },
+	]
+}
+
+function DemoPageContent() {
 	return (
 		<Box
 			sx={{
-				py: 4,
+				py: 0,
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: 'center',
 				textAlign: 'center',
 			}}
 		>
-			<Divider />
-			<App />
-			<Typography>Dashboard content for {pathname}</Typography>
+			<Divider sx={{ mb: 2.5 }}/>
+			
 		</Box>
 	)
-}
-
-function useDemoRouter(initialPath) {
-	const [pathname, setPathname] = React.useState(initialPath)
-
-	const router = React.useMemo(() => {
-		return {
-			pathname,
-			searchParams: new URLSearchParams(),
-			navigate: path => setPathname(String(path)),
-		}
-	}, [pathname])
-
-	return router
 }
 
 DemoPageContent.propTypes = {
 	pathname: PropTypes.string.isRequired,
 }
 
-function CustomAppTitle() {
-	return (
-		<Stack direction='row' alignItems='center' spacing={2}>
-			<Typography variant='h6'>My App</Typography>
-		</Stack>
-	)
-}
-
-function DashboardLayoutBasic(props) {
-	const { window } = props
+function DashboardLayoutWithRouter({ window }) {
+	const router = useRouter()
+	const navigation = getNavigation(router.navigate)
 
 	const [session, setSession] = React.useState({})
 
-	const authentication = React.useMemo(() => {
-		return {
-			signIn: () => {
-				setSession({
-					user: {
-						name: '',
-						email: '',
-						image: '',
-					},
-				})
-			},
-			signOut: () => {
-				setSession(null)
-			},
-		}
-	}, [])
-
-	const router = useDemoRouter('./')
-
-	// Remove
-	const demoWindow = window !== undefined ? window() : undefined
+	const authentication = React.useMemo(
+		() => ({
+			signIn: () => setSession({ user: { name: '', email: '', image: '' } }),
+			signOut: () => setSession(null),
+		}),
+		[]
+	)
 
 	return (
-		// preview-start
-
 		<AppProvider
 			session={session}
 			authentication={authentication}
-			navigation={NAVIGATION}
+			navigation={navigation}
 			router={router}
 			theme={Theme}
-			window={demoWindow}
+			window={window}
 			branding={{
 				logo: <img src='https://mui.com/static/logo.png' alt='MUI logo' />,
 				title: 'App',
@@ -171,17 +139,28 @@ function DashboardLayoutBasic(props) {
 			<DashboardLayout
 				slots={{
 					toolbarActions: () => null,
-					sidebarFooter: () => {
-						return (<ThemeSwitcher />)},
+					sidebarFooter: () => <ThemeSwitcher />,
 				}}
 				defaultSidebarCollapsed
 			>
 				<PageContainer>
 					<DemoPageContent pathname={router.pathname} />
+					<Routes>
+						<Route path='/' element={<Dashboard />} />
+						<Route path='/dashboard' element={<Dashboard />} />
+						<Route path='/profile' element={<Profile />} />
+					</Routes>
 				</PageContainer>
 			</DashboardLayout>
 		</AppProvider>
-		// preview-end
+	)
+}
+
+function DashboardLayoutBasic(props) {
+	return (
+		<Router>
+			<DashboardLayoutWithRouter {...props} />
+		</Router>
 	)
 }
 
