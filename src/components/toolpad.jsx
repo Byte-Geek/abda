@@ -25,6 +25,7 @@ import { PageContainer } from '@toolpad/core/PageContainer'
 import App from '../App.jsx'
 import Dashboard from './pages/DashBoard.jsx'
 import Profile from './pages/Profile.jsx'
+import MainPage from './pages/MainPage.jsx'
 
 const Theme = createTheme({
 	cssVariables: {
@@ -99,7 +100,6 @@ function DemoPageContent() {
 			}}
 		>
 			<Divider sx={{ mb: 2.5 }}/>
-			
 		</Box>
 	)
 }
@@ -107,6 +107,20 @@ function DemoPageContent() {
 DemoPageContent.propTypes = {
 	pathname: PropTypes.string.isRequired,
 }
+
+// function useRoute(initialPath) {
+// 	const [pathname, setPathname] = React.useState(initialPath)
+
+// 	const router = React.useMemo(() => {
+// 		return {
+// 			pathname,
+// 			searchParams: new URLSearchParams(),
+// 			navigate: path => setPathname(String(path)),
+// 		}
+// 	}, [pathname])
+
+// 	return router
+// }
 
 function DashboardLayoutWithRouter({ window }) {
 	const router = useRouter()
@@ -121,6 +135,7 @@ function DashboardLayoutWithRouter({ window }) {
 		}),
 		[]
 	)
+	
 
 	return (
 		<AppProvider
@@ -146,7 +161,7 @@ function DashboardLayoutWithRouter({ window }) {
 				<PageContainer>
 					<DemoPageContent pathname={router.pathname} />
 					<Routes>
-						<Route path='/' element={<Dashboard />} />
+						<Route path='/' element={<MainPage />} />
 						<Route path='/dashboard' element={<Dashboard />} />
 						<Route path='/profile' element={<Profile />} />
 					</Routes>
