@@ -9,7 +9,6 @@ import {
 import PropTypes from 'prop-types'
 
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import { createTheme } from '@mui/material/styles'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import BarChartIcon from '@mui/icons-material/BarChart'
@@ -22,7 +21,6 @@ import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout'
 import { PageContainer } from '@toolpad/core/PageContainer'
 
-import App from '../App.jsx'
 import Dashboard from './pages/DashBoard.jsx'
 import Profile from './pages/Profile.jsx'
 import MainPage from './pages/MainPage.jsx'
