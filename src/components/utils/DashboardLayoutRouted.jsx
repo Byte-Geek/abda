@@ -15,7 +15,6 @@ import { PageContainer } from '@toolpad/core/PageContainer'
 import Box from '@mui/material/Box'
 import Divider from '@mui/joy/Divider'
 
-
 import getNavigation from './getNavigation.jsx'
 
 import Dashboard from '../pages/DashBoard.jsx'

@@ -2,8 +2,6 @@ import * as React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-
-
 import DashboardLayoutRouted from './utils/DashboardLayoutRouted.jsx'
 
 
