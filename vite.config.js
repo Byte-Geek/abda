@@ -10,6 +10,6 @@ export default defineConfig({
 		historyApiFallback: true,
 	},
 	build: {
-		chunkSizeWarningLimit: 1000,
+		chunkSizeWarningLimit: 5000,
 	},
 })
