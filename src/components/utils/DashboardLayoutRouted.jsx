@@ -12,8 +12,8 @@ import { createTheme } from '@mui/material/styles'
 import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout'
 import { PageContainer } from '@toolpad/core/PageContainer'
-import { Box } from '@mui/material/Box'
-import { Divider } from '@mui/joy/Divider'
+import Box from '@mui/material/Box'
+import Divider from '@mui/joy/Divider'
 
 import getNavigation from './getNavigation.jsx'
 
