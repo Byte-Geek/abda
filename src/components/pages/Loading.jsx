@@ -8,7 +8,7 @@ export default function Loading() {
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setShowFallback(true)
-		}, 250)
+		}, 300)
 		return () => clearTimeout(timer)
 	}, [])
 
