@@ -63,7 +63,7 @@ DemoPageContent.propTypes = {
 	pathname: PropTypes.string.isRequired,
 }
 
-function DashboardLayoutRouterd({ window }) {
+function DashboardLayoutRouted({ window }) {
 	const router = useRouter()
 	const navigation = getNavigation(router.navigate)
 
@@ -111,4 +111,4 @@ function DashboardLayoutRouterd({ window }) {
 	)
 }
 
-export default DashboardLayoutRouterd
+export default DashboardLayoutRouted
