@@ -17,9 +17,11 @@ import Divider from '@mui/joy/Divider'
 
 import getNavigation from './getNavigation.jsx'
 
-import Dashboard from '../pages/DashBoard.jsx'
-import Profile from '../pages/Profile.jsx'
-import MainPage from '../pages/MainPage.jsx'
+import { lazy, Suspense } from 'react'
+
+const MainPage = lazy(() => import('../pages/MainPage.jsx'))
+const Dashboard = lazy(() => import('../pages/DashBoard.jsx'))
+const Profile = lazy(() => import('../pages/Profile.jsx'))
 
 const Theme = createTheme({
 	cssVariables: {
@@ -30,7 +32,6 @@ const Theme = createTheme({
 		values: { xs: 0, sm: 600, md: 600, lg: 1200, xl: 1536 },
 	},
 })
-
 
 function useRouter() {
 	const location = useLocation()
@@ -100,11 +101,14 @@ function DashboardLayoutRouted({ window }) {
 			>
 				<PageContainer>
 					<DemoPageContent pathname={router.pathname} />
-					<Routes>
-						<Route path='/' element={<MainPage />} />
-						<Route path='/dashboard' element={<Dashboard />} />
-						<Route path='/profile' element={<Profile />} />
-					</Routes>
+					<Suspense fallback={<div>Loading...</div>}>
+						<Routes>
+							<Route path='/' element={<MainPage />} />
+							<Route path='/dashboard' element={<Dashboard />} />
+							<Route path='/profile' element={<Profile />} />
+							<Route path='*' element={<div>404</div>} />
+						</Routes>
+					</Suspense>
 				</PageContainer>
 			</DashboardLayout>
 		</AppProvider>
