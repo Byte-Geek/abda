@@ -16,6 +16,7 @@ import Box from '@mui/material/Box'
 import Divider from '@mui/joy/Divider'
 
 import getNavigation from './getNavigation.jsx'
+import Loading from '../pages/Loading.jsx'
 
 import { lazy, Suspense } from 'react'
 
@@ -101,7 +102,7 @@ function DashboardLayoutRouted({ window }) {
 			>
 				<PageContainer>
 					<DemoPageContent pathname={router.pathname} />
-					<Suspense fallback={<div>Loading...</div>}>
+					<Suspense fallback={<Loading />}>
 						<Routes>
 							<Route path='/' element={<MainPage />} />
 							<Route path='/dashboard' element={<Dashboard />} />

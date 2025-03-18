@@ -1,4 +1,4 @@
-import DashboardIcon from '@mui/icons-material/Dashboard'
+import DashboardIcon  from '@mui/icons-material/Dashboard'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import DescriptionIcon from '@mui/icons-material/Description'
 import LayersIcon from '@mui/icons-material/Layers'
@@ -12,13 +12,13 @@ function getNavigation(navigate) {
 			segment: 'dashboard',
 			title: 'Dashboard',
 			icon: <DashboardIcon />,
-			onclick: () => navigate('/'),
+			onClick: () => navigate('/'),
 		},
 		{
 			segment: 'profile',
 			title: 'Profile',
 			icon: <PersonIcon />,
-			onclick: () => navigate('/profile'),
+			onClick: () => navigate('/profile'),
 		},
 		{ kind: 'divider' },
 		{ kind: 'header', title: 'Analytics' },
@@ -31,13 +31,13 @@ function getNavigation(navigate) {
 					segment: 'chart',
 					title: 'Chart',
 					icon: <DescriptionIcon />,
-					onclick: () => navigate('/chart'),
+					onClick: () => navigate('/chart'),
 				},
 				{
 					segment: 'traffic',
 					title: 'Traffic',
 					icon: <DescriptionIcon />,
-					onclick: () => navigate('/traffic'),
+					onClick: () => navigate('/traffic'),
 				},
 			],
 		},

@@ -1,11 +1,23 @@
 import * as React from 'react'
-
+import { BrowserRouter as Router } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import DashboardLayoutRouted from './utils/DashboardLayoutRouted.jsx'
 
 
+function DashboardLayoutBasic(props) {
+	return (
 
+			<DashboardLayoutRouted {...props} />
+
+	)
+}
+
+DashboardLayoutBasic.propTypes = {
+	window: PropTypes.func,
+}
+
+export default DashboardLayoutBasic
 
 
 
@@ -22,17 +34,3 @@ import DashboardLayoutRouted from './utils/DashboardLayoutRouted.jsx'
 
 // 	return router
 // }
-
-function DashboardLayoutBasic(props) {
-	return (
-
-			<DashboardLayoutRouted {...props} />
-
-	)
-}
-
-DashboardLayoutBasic.propTypes = {
-	window: PropTypes.func,
-}
-
-export default DashboardLayoutBasic
