@@ -1,8 +1,9 @@
-import DashboardIcon  from '@mui/icons-material/Dashboard'
+import DashboardIcon from '@mui/icons-material/Dashboard'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import DescriptionIcon from '@mui/icons-material/Description'
 import LayersIcon from '@mui/icons-material/Layers'
 import PersonIcon from '@mui/icons-material/Person'
+import { Link } from 'react-router-dom'
 
 function getNavigation(navigate) {
 	return [
@@ -11,13 +12,13 @@ function getNavigation(navigate) {
 			segment: 'dashboard',
 			title: 'Dashboard',
 			icon: <DashboardIcon />,
-			onclick: () => navigate('/dashboard'),
+			onclick: () => navigate(<Link to='/'></Link>),
 		},
 		{
 			segment: 'profile',
 			title: 'Profile',
 			icon: <PersonIcon />,
-			onclick: () => navigate('/profile'),
+			onclick: () => navigate(<link to='/profile'></link>),
 		},
 		{ kind: 'divider' },
 		{ kind: 'header', title: 'Analytics' },
@@ -30,13 +31,13 @@ function getNavigation(navigate) {
 					segment: 'chart',
 					title: 'Chart',
 					icon: <DescriptionIcon />,
-					onclick: () => navigate('/chart'),
+					onclick: () => navigate(<Link to='/chart'></Link>),
 				},
 				{
 					segment: 'traffic',
 					title: 'Traffic',
 					icon: <DescriptionIcon />,
-					onclick: () => navigate('/traffic'),
+					onclick: () => navigate(<Link to='/traffic'></Link>),
 				},
 			],
 		},
