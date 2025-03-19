@@ -1,15 +1,29 @@
 import * as React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, StaticRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 
 import DashboardLayoutRouted from './utils/DashboardLayoutRouted.jsx'
+import LogIn from './pages/LogIn.jsx'
 
+function CustomRouter({ children }) {
+	if (typeof window === 'undefined') {
+		return <StaticRouter location='/'>{children}</StaticRouter>
+	}
+	return <Router>{children}</Router>
+}
 
 function App(props) {
+	const [isAuthenticated, setIsAuthenticated] = useState(false)
+
 	return (
-
-			<DashboardLayoutRouted {...props} />
-
+		<CustomRouter>
+			{isAuthenticated ? (
+				<DashboardLayoutRouted {...props} />
+			) : (
+				<LogIn onLogin={() => setIsAuthenticated(true)} />
+			)}
+		</CustomRouter>
 	)
 }
 

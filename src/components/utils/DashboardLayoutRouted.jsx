@@ -5,25 +5,22 @@ import {
 	useLocation,
 	useNavigate,
 } from 'react-router-dom'
-import React from 'react'
+import React, { lazy, Suspense, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
-
 import { createTheme } from '@mui/material/styles'
 import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout'
 import { PageContainer } from '@toolpad/core/PageContainer'
 import Box from '@mui/material/Box'
 
-
 import getNavigation from './getNavigation.jsx'
 import Loading from '../pages/Loading.jsx'
-
-import { lazy, Suspense } from 'react'
-
 import MainPage from '../pages/MainPage.jsx'
-//const MainPage = lazy(() => import('../pages/MainPage.jsx'))
+
 const Dashboard = lazy(() => import('../pages/DashBoard.jsx'))
 const Profile = lazy(() => import('../pages/Profile.jsx'))
+const NotFound = lazy(() => import('../pages/NotFound.jsx'))
+
 
 const Theme = createTheme({
 	cssVariables: {
@@ -42,40 +39,22 @@ function useRouter() {
 	return {
 		pathname: location.pathname,
 		searchParams: new URLSearchParams(location.search),
-		navigate: path => navigate(path),
+		navigate: (path) => navigate(path),
 	}
 }
 
-function DemoPageContent() {
-	return (
-		<Box
-			sx={{
-				py: 0,
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				textAlign: 'center',
-			}}
-		>
-			
-		</Box>
-	)
-}
 
-DemoPageContent.propTypes = {
-	pathname: PropTypes.string.isRequired,
-}
 
 function DashboardLayoutRouted({ window }) {
 	const router = useRouter()
-	const navigation = getNavigation(router.navigate)
+	const navigation = getNavigation() 
 
 	const [session, setSession] = React.useState({})
 
-	const authentication = React.useMemo(
+	const authentication = useMemo(
 		() => ({
 			signIn: () => setSession({ user: { name: '', email: '', image: '' } }),
-			signOut: () => setSession(null),
+			signOut: () => setSession({}),
 		}),
 		[]
 	)
@@ -113,41 +92,23 @@ function DashboardLayoutRouted({ window }) {
 				}}
 				defaultSidebarCollapsed
 			>
-				
-					<PageContainer>
-						<DemoPageContent pathname={router.pathname} />
+				<PageContainer>
+					<Suspense fallback={<Loading />}>
 						<Routes>
-							<Route
-								path='/'
-								element={
-									<Suspense fallback={<Loading />}>
-										<MainPage />
-									</Suspense>
-								}
-							/>
-							<Route
-								path='/dashboard'
-								element={
-									<Suspense fallback={<Loading />}>
-										<Dashboard />
-									</Suspense>
-								}
-							/>
-							<Route
-								path='/profile'
-								element={
-									<Suspense fallback={<Loading />}>
-										<Profile />
-									</Suspense>
-								}
-							/>
-							<Route path='*' element={<div>404</div>} />
+							<Route path='/' element={<MainPage />} />
+							<Route path='/dashboard' element={<Dashboard />} />
+							<Route path='/profile' element={<Profile />} />
+							<Route path='*' element={<NotFound />} />
 						</Routes>
-					</PageContainer>
-				
+					</Suspense>
+				</PageContainer>
 			</DashboardLayout>
 		</AppProvider>
 	)
+}
+
+DashboardLayoutRouted.propTypes = {
+	window: PropTypes.object,
 }
 
 export default DashboardLayoutRouted
