@@ -13,14 +13,15 @@ import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout'
 import { PageContainer } from '@toolpad/core/PageContainer'
 import Box from '@mui/material/Box'
-import Divider from '@mui/joy/Divider'
+
 
 import getNavigation from './getNavigation.jsx'
 import Loading from '../pages/Loading.jsx'
 
 import { lazy, Suspense } from 'react'
 
-const MainPage = lazy(() => import('../pages/MainPage.jsx'))
+import MainPage from '../pages/MainPage.jsx'
+//const MainPage = lazy(() => import('../pages/MainPage.jsx'))
 const Dashboard = lazy(() => import('../pages/DashBoard.jsx'))
 const Profile = lazy(() => import('../pages/Profile.jsx'))
 
@@ -56,7 +57,7 @@ function DemoPageContent() {
 				textAlign: 'center',
 			}}
 		>
-			<Divider sx={{ mb: 2.5 }} />
+			
 		</Box>
 	)
 }
@@ -96,21 +97,54 @@ function DashboardLayoutRouted({ window }) {
 			<DashboardLayout
 				slots={{
 					toolbarActions: () => null,
-					sidebarFooter: () => <ThemeSwitcher />,
+					sidebarFooter: () => (
+						<Box
+							sx={{
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+								width: '100%',
+								my: 2,
+							}}
+						>
+							<ThemeSwitcher />
+						</Box>
+					),
 				}}
 				defaultSidebarCollapsed
 			>
-				<PageContainer>
-					<DemoPageContent pathname={router.pathname} />
-					<Suspense fallback={<Loading />}>
+				
+					<PageContainer>
+						<DemoPageContent pathname={router.pathname} />
 						<Routes>
-							<Route path='/' element={<MainPage />} />
-							<Route path='/dashboard' element={<Dashboard />} />
-							<Route path='/profile' element={<Profile />} />
+							<Route
+								path='/'
+								element={
+									<Suspense fallback={<Loading />}>
+										<MainPage />
+									</Suspense>
+								}
+							/>
+							<Route
+								path='/dashboard'
+								element={
+									<Suspense fallback={<Loading />}>
+										<Dashboard />
+									</Suspense>
+								}
+							/>
+							<Route
+								path='/profile'
+								element={
+									<Suspense fallback={<Loading />}>
+										<Profile />
+									</Suspense>
+								}
+							/>
 							<Route path='*' element={<div>404</div>} />
 						</Routes>
-					</Suspense>
-				</PageContainer>
+					</PageContainer>
+				
 			</DashboardLayout>
 		</AppProvider>
 	)

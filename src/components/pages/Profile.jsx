@@ -1,12 +1,11 @@
 import React from 'react'
+import { Divider } from '@mui/material'
 
-const Profile = () => {
-  return (
-    <div>
-      <p>Profile</p>
-    </div>
-  )
+export default function Profile() {
+	return (
+		<div>
+      <Divider sx={{ mb: 2.5 }} />
+			<p>Profile</p>
+		</div>
+	)
 }
-
-export default Profile
-

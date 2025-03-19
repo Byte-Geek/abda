@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Backdrop from '@mui/material/Backdrop'
+import { Backdrop } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 
 export default function Loading() {
@@ -14,7 +14,11 @@ export default function Loading() {
 
 	return showFallback ? (
 		<Backdrop
-			sx={theme => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+			sx={theme => ({
+				color: '#fff',
+				backgroundColor: 'rgba(0, 0, 0, 0.5)',
+				zIndex: theme.zIndex.drawer + 1,
+			})}
 			open={true}
 		>
 			<CircularProgress color='inherit' />

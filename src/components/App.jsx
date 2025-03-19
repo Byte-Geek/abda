@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import DashboardLayoutRouted from './utils/DashboardLayoutRouted.jsx'
 
 
-function DashboardLayoutBasic(props) {
+function App(props) {
 	return (
 
 			<DashboardLayoutRouted {...props} />
@@ -13,11 +13,11 @@ function DashboardLayoutBasic(props) {
 	)
 }
 
-DashboardLayoutBasic.propTypes = {
+App.propTypes = {
 	window: PropTypes.func,
 }
 
-export default DashboardLayoutBasic
+export default App
 
 
 

@@ -1,12 +1,11 @@
 import React from 'react'
+import { Divider } from '@mui/material'
 
-const DashBoard = () => {
-  return (
-    <div>
-      <p>pppp</p>
-    </div>
-  )
+export default function DashBoard() {
+	return (
+		<div>
+      <Divider sx={{ mb: 2.5 }} />
+			<p>DashBoard</p>
+		</div>
+	)
 }
-
-export default DashBoard
-
