@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { BrowserRouter as Router, StaticRouter } from 'react-router-dom'
+import { BrowserRouter as Router, StaticRouter, Routes, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 
 import DashboardLayoutRouted from './utils/DashboardLayoutRouted.jsx'
-
+import LogIn from './pages/LogIn.jsx'
 
 function CustomRouter({ children }) {
 	if (typeof window === 'undefined') {
@@ -17,14 +17,17 @@ function App(props) {
 
 
 	return (
-		<Router>
-			<DashboardLayoutRouted {...props} />
-		</Router>
+		<CustomRouter>
+			<Routes>
+				<Route path='/login' element={<LogIn />} />
+				<Route path='/*' element={<DashboardLayoutRouted {...props} />} />
+			</Routes>
+		</CustomRouter>
 	)
 }
 
 App.propTypes = {
-	window: PropTypes.func,
+	window: PropTypes.object, // Nu PropTypes.func
 }
 
 export default App

@@ -1,11 +1,11 @@
 import {
-	BrowserRouter as Router,
 	Routes,
 	Route,
 	useLocation,
 	useNavigate,
+	Navigate,
 } from 'react-router-dom'
-import React, { lazy, Suspense, useMemo} from 'react'
+import React, { lazy, Suspense, useMemo, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { createTheme } from '@mui/material/styles'
 import { AppProvider } from '@toolpad/core/AppProvider'
@@ -20,7 +20,6 @@ import MainPage from '../pages/MainPage.jsx'
 const Dashboard = lazy(() => import('../pages/DashBoard.jsx'))
 const Profile = lazy(() => import('../pages/Profile.jsx'))
 const NotFound = lazy(() => import('../pages/NotFound.jsx'))
-
 
 const Theme = createTheme({
 	cssVariables: {
@@ -39,24 +38,46 @@ function useRouter() {
 	return {
 		pathname: location.pathname,
 		searchParams: new URLSearchParams(location.search),
-		navigate: (path) => navigate(path),
+		navigate: path => navigate(path),
 	}
 }
 
-
-
 function DashboardLayoutRouted({ window }) {
 	const router = useRouter()
-	const navigation = getNavigation() 
+	const navigation = getNavigation()
 
-	const [session, setSession] = React.useState({})
+	// 🟢 1. Citim sesiunea corect din localStorage
+	const [session, setSession] = useState(() => {
+		const savedSession = localStorage.getItem('session')
+		return savedSession ? JSON.parse(savedSession) : null
+	})
 
+	// 🟢 2. Verificăm și actualizăm sesiunea corect la montare
+	useEffect(() => {
+		const savedSession = localStorage.getItem('session')
+		if (savedSession) {
+			setSession(JSON.parse(savedSession))
+		}
+	}, [])
+
+	// 🟢 3. Funcția de autentificare corectă
 	const authentication = useMemo(
 		() => ({
-			signIn: () => setSession({ user: { name: '', email: '', image: '' } }),
-			signOut: () => setSession({}),
+			signIn: () => {
+				const userSession = {
+					user: { name: 'User', email: 'user@example.com', image: '' },
+				}
+				localStorage.setItem('session', JSON.stringify(userSession))
+				setSession(userSession)
+				router.navigate('/dashboard')
+			},
+			signOut: () => {
+				localStorage.removeItem('session') // 🟢 Ștergem din localStorage
+				setSession(null) // 🟢 Resetăm starea internă
+				router.navigate('/login') // 🟢 Trimitem user-ul la login
+			},
 		}),
-		[]
+		[router]
 	)
 
 	return (
@@ -96,8 +117,22 @@ function DashboardLayoutRouted({ window }) {
 					<Suspense fallback={<Loading />}>
 						<Routes>
 							<Route path='/' element={<MainPage />} />
-							<Route path='/dashboard' element={<Dashboard />} />
-							<Route path='/profile' element={<Profile />} />
+							<Route
+								path='/dashboard'
+								element={
+									session?.user ? (
+										<Dashboard />
+									) : (
+										<Navigate to='/login' replace />
+									)
+								}
+							/>
+							<Route
+								path='/profile'
+								element={
+									session?.user ? <Profile /> : <Navigate to='/login' replace />
+								}
+							/>
 							<Route path='*' element={<NotFound />} />
 						</Routes>
 					</Suspense>
