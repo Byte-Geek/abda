@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { AppProvider } from '@toolpad/core/AppProvider'
 import { SignInPage } from '@toolpad/core/SignInPage'
@@ -22,7 +22,10 @@ export default function LogIn() {
 	const location = useLocation()
 	const from = location.state?.from?.pathname || '/dashboard' // Default la Dashboard
 
-	// Verifică dacă utilizatorul este deja logat
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+
+	// Verificăm dacă utilizatorul este deja logat
 	useEffect(() => {
 		const session = localStorage.getItem('session')
 		if (session) {
@@ -33,13 +36,23 @@ export default function LogIn() {
 	const signIn = async () => {
 		await new Promise(resolve => setTimeout(resolve, 500)) // Simulare delay login
 
-		// Salvăm sesiunea în localStorage
-		const userSession = {
-			user: { name: 'User', email: 'user@example.com', image: '' },
+		if (!email) {
+			console.log('Introduceți un email!')
+			return
 		}
+
+		// ✅ Salvăm email-ul real introdus de utilizator
+		const userSession = {
+			user: {
+				name: email.split('@')[0], // Folosim partea din email ca nume
+				email: email,
+				image: '',
+			},
+		}
+
 		localStorage.setItem('session', JSON.stringify(userSession))
 
-		console.log('Autentificare reușită!')
+		console.log('Autentificare reușită!', userSession)
 		navigate(from, { replace: true })
 	}
 
@@ -64,8 +77,17 @@ export default function LogIn() {
 					signIn={signIn}
 					providers={providers}
 					slotProps={{
-						emailField: { variant: 'standard', autoFocus: true },
-						passwordField: { variant: 'standard' },
+						emailField: {
+							variant: 'standard',
+							autoFocus: true,
+							value: email,
+							onChange: e => setEmail(e.target.value),
+						},
+						passwordField: {
+							variant: 'standard',
+							value: password,
+							onChange: e => setPassword(e.target.value),
+						},
 						submitButton: { variant: 'outlined' },
 					}}
 				/>
