@@ -5,7 +5,7 @@ import {
 	useLocation,
 	useNavigate,
 } from 'react-router-dom'
-import React, { lazy, Suspense, useMemo, useState } from 'react'
+import React, { lazy, Suspense, useMemo} from 'react'
 import PropTypes from 'prop-types'
 import { createTheme } from '@mui/material/styles'
 import { AppProvider } from '@toolpad/core/AppProvider'
